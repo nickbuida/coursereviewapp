@@ -1,6 +1,10 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<div class="navigation">
+    <a href="{{ url_for('courses') }}" class="back-btn"><i class="back-arrow">←</i> Back to Courses</a>
+</div>
+
 <div class="course-header">
     <h1>{{ course['course_name'] }}</h1>
     <div class="course-meta">
@@ -53,6 +57,31 @@
 </div>
 
 <style>
+    /* Navigation */
+    .navigation {
+        margin-bottom: 15px;
+    }
+    
+    .back-btn {
+        display: inline-flex;
+        align-items: center;
+        color: #3498db;
+        text-decoration: none;
+        font-weight: 500;
+        padding: 8px 12px;
+        border-radius: 4px;
+        transition: all 0.2s ease;
+    }
+    
+    .back-btn:hover {
+        background-color: rgba(52, 152, 219, 0.1);
+    }
+    
+    .back-arrow {
+        margin-right: 6px;
+        font-size: 18px;
+    }
+    
     /* Course header styling */
     .course-header {
         background-color: #2c3e50;
