@@ -52,6 +52,11 @@
     {% endif %}
 </div>
 
+<!-- Back to Courses Button -->
+<div class="back-button-container">
+    <a href="{{ url_for('courses') }}" class="back-button">← Back to Courses</a>
+</div>
+
 <style>
     /* Course header styling */
     .course-header {
@@ -170,6 +175,27 @@
         background-color: #f8f9fa;
         border-radius: 8px;
         color: #6c757d;
+    }
+
+    /* Back button styling */
+    .back-button-container {
+        margin-top: 20px;
+        text-align: center;
+    }
+
+    .back-button {
+        display: inline-block;
+        background-color: #3498db;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 5px;
+        text-decoration: none;
+        font-size: 16px;
+        transition: background-color 0.3s ease;
+    }
+
+    .back-button:hover {
+        background-color: #2980b9;
     }
 </style>
 {% endblock %}
