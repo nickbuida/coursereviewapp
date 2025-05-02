@@ -32,12 +32,14 @@ CREATE TABLE courses (
 CREATE TABLE reviews (
     review_id INTEGER PRIMARY KEY AUTOINCREMENT,
     student_id INTEGER NOT NULL,
+    professor_id INTEGER,
     course_code TEXT NOT NULL,
     difficulty_rating REAL CHECK (difficulty_rating BETWEEN 0 AND 10),    
     professor_rating INTEGER,
     comments TEXT,
     FOREIGN KEY (student_id) REFERENCES students(student_id),
-    FOREIGN KEY (course_code) REFERENCES courses(course_code)
+    FOREIGN KEY (course_code) REFERENCES courses(course_code),
+    FOREIGN KEY (professor_id) REFERENCES professors(professor_id)
 );
 
 -- Table: performance

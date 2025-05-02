@@ -1,23 +1,175 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>{{ course['course_name'] }}</h1>
-<p>Course Code: {{ course['course_code'] }}</p>
-<p>Department ID: {{ course['department_id'] }}</p>
-<p>Department Name: {{ department_name }}</p>
+<div class="course-header">
+    <h1>{{ course['course_name'] }}</h1>
+    <div class="course-meta">
+        <span class="course-code">{{ course['course_code'] }}</span>
+        <span class="department">{{ department_name }}</span>
+    </div>
+</div>
 
-<h2>Reviews <a href="/course/{{course['course_code']}}/add_review"><button>Add Review</button></a></h2>
-{% if reviews %}
-<ul>
-    {% for review in reviews %}
-    <li>
-        {{ review['comments'] }}<br>
-        Difficulty: {{ review['difficulty_rating'] }}<br>
-        Professor: {{ review['professor_rating'] }}
-    </li>
-    {% endfor %}
-</ul>
-{% else %}
-<p>No Reviews Yet</p>
-{% endif %}
+<div class="course-details">
+    <div class="course-info">
+        <p><strong>Department ID:</strong> {{ course['department_id'] }}</p>
+        {% if course['credit_hours'] %}<p><strong>Credit Hours:</strong> {{ course['credit_hours'] }}</p>{% endif %}
+        {% if course['description'] %}<p class="description">{{ course['description'] }}</p>{% endif %}
+    </div>
+</div>
+
+<div class="reviews-section">
+    <h2>Reviews <a href="/course/{{course['course_code']}}/add_review" class="add-review-btn">Add Review</a></h2>
+    
+    {% if reviews %}
+    <div class="reviews-list">
+        {% for review in reviews %}
+        <div class="review-card">
+            <div class="review-meta">
+                <span class="professor-name">Professor: {{ review['professor_name'] or 'Unknown' }}</span>
+            </div>
+            <div class="review-ratings">
+                <div class="rating"><span>Difficulty:</span> 
+                    <div class="stars">
+                        {% for i in range(review['difficulty_rating']|int) %}★{% endfor %}
+                        {% for i in range(5 - review['difficulty_rating']|int) %}☆{% endfor %}
+                    </div>
+                </div>
+                <div class="rating"><span>Professor:</span> 
+                    <div class="stars">
+                        {% for i in range(review['professor_rating']|int) %}★{% endfor %}
+                        {% for i in range(5 - review['professor_rating']|int) %}☆{% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div class="review-comments">
+                <p>{{ review['comments'] }}</p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p class="no-reviews">No Reviews Yet</p>
+    {% endif %}
+</div>
+
+<style>
+    /* Course header styling */
+    .course-header {
+        background-color: #2c3e50;
+        color: white;
+        padding: 20px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+    }
+    
+    .course-header h1 {
+        margin: 0;
+        font-size: 28px;
+    }
+    
+    .course-meta {
+        margin-top: 8px;
+        font-size: 16px;
+    }
+    
+    .course-code {
+        background-color: #34495e;
+        padding: 4px 8px;
+        border-radius: 4px;
+        margin-right: 10px;
+    }
+    
+    /* Course details */
+    .course-details {
+        background-color: white;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 25px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    .course-info p {
+        margin: 8px 0;
+    }
+    
+    .course-info strong {
+        color: #2c3e50;
+    }
+    
+    .description {
+        margin-top: 15px;
+        line-height: 1.6;
+    }
+    
+    /* Reviews section */
+    .reviews-section h2 {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+    
+    .add-review-btn {
+        display: inline-block;
+        background-color: #3498db;
+        color: white;
+        padding: 8px 15px;
+        border-radius: 4px;
+        text-decoration: none;
+        font-size: 14px;
+        transition: background-color 0.3s;
+    }
+    
+    .add-review-btn:hover {
+        background-color: #2980b9;
+    }
+    
+    /* Review cards */
+    .reviews-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 20px;
+    }
+    
+    .review-card {
+        background-color: white;
+        border-radius: 8px;
+        padding: 15px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    .review-ratings {
+        margin-bottom: 10px;
+    }
+    
+    .rating {
+        display: flex;
+        align-items: center;
+        margin-bottom: 5px;
+    }
+    
+    .rating span {
+        width: 80px;
+        font-weight: bold;
+        color: #555;
+    }
+    
+    .stars {
+        color: #f39c12;
+        letter-spacing: 2px;
+    }
+    
+    .review-comments {
+        padding-top: 10px;
+        border-top: 1px solid #eee;
+    }
+    
+    .no-reviews {
+        text-align: center;
+        padding: 30px;
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        color: #6c757d;
+    }
+</style>
 {% endblock %}
