@@ -10,7 +10,11 @@
 {% if reviews %}
 <ul>
     {% for review in reviews %}
-    <li>{{ review['comments'] }}</li>
+    <li>
+        {{ review['comments'] }}<br>
+        Difficulty: {{ review['difficulty_rating'] }}<br>
+        Professor: {{ review['professor_rating'] }}
+    </li>
     {% endfor %}
 </ul>
 {% else %}

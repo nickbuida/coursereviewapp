@@ -4,7 +4,6 @@ DROP TABLE IF EXISTS tags;
 DROP TABLE IF EXISTS course_professors;
 DROP TABLE IF EXISTS professors;
 DROP TABLE IF EXISTS performance;
-DROP TABLE IF EXISTS posts;
 DROP TABLE IF EXISTS reviews;
 DROP TABLE IF EXISTS courses;
 DROP TABLE IF EXISTS students;
@@ -91,13 +90,4 @@ CREATE TABLE review_tags (
     PRIMARY KEY (review_id, tag_id),
     FOREIGN KEY (review_id) REFERENCES reviews(review_id),
     FOREIGN KEY (tag_id) REFERENCES tags(tag_id)
-);
-
--- Table: posts
-
-CREATE TABLE posts (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    title TEXT NOT NULL,
-    content TEXT NOT NULL
 );
