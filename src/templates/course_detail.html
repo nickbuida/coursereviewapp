@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>{{ course['course_name'] }}</h1>
+<p>Course Code: {{ course['course_code'] }}</p>
+<p>Department ID: {{ course['department_id'] }}</p>
+<p>Department Name: {{ department_name }}</p>
+
+<h2>Reviews <a href="/course/{{course['course_code']}}/add_review"><button>Add Review</button></a></h2>
+{% if reviews %}
+<ul>
+    {% for review in reviews %}
+    <li>{{ review['comments'] }}</li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>No Reviews Yet</p>
+{% endif %}
+{% endblock %}
