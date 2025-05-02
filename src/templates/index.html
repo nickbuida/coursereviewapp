@@ -1,21 +1,58 @@
-diff
---- a/src/templates/index.html
-+++ b/src/templates/index.html
-@@ -1,10 +1,7 @@
--<!DOCTYPE html>
--<html lang="en">
--  <head>
--    <meta charset="UTF-8" />
--    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
--    <title>Hello World</title>
--  </head>
-+{% extends 'base.html' %}
-+{% block title %}Hello World{% endblock %}
- 
--  <body>
--    <h1>Hello World</h1>
--  </body>
--</html>
-+{% block content %}
-+    <h1>Hello World</h1>
-+{% endblock %}
+{% extends 'base.html' %}
+{% block title %}Course Review App - Home{% endblock %}
+
+{% block content %}
+<div class="hero-section">
+    <div class="hero-content">
+        <h1>Find the Perfect Courses</h1>
+        <p>Discover courses, read reviews, and share your experiences with other students</p>
+        <a href="{{ url_for('courses') }}" class="cta-button">Browse Courses</a>
+    </div>
+</div>
+
+<style>
+    .hero-section {
+        background: linear-gradient(135deg, #3498db, #8e44ad);
+        color: white;
+        text-align: center;
+        padding: 80px 20px;
+        border-radius: 10px;
+        margin: 20px 0;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+    
+    .hero-content {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+    
+    .hero-content h1 {
+        font-size: 42px;
+        margin-bottom: 20px;
+    }
+    
+    .hero-content p {
+        font-size: 20px;
+        margin-bottom: 30px;
+    }
+    
+    .cta-button {
+        display: inline-block;
+        background-color: #ffffff;
+        color: #3498db;
+        font-size: 18px;
+        font-weight: bold;
+        padding: 15px 30px;
+        border-radius: 50px;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    .cta-button:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        background-color: #f8f9fa;
+    }
+</style>
+{% endblock %}

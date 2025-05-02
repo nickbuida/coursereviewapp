@@ -1,13 +1,173 @@
 {% extends 'base.html' %}
+{% block title %}Course Review App - Courses{% endblock %}
 
 {% block content %}
-    <h1>Courses</h1>
-    <ul>
-        {% for course in courses %}
-        <li>
-        <a href="/course/{{ course['course_code'] }}">{{ course['course_name'] }}</a>
+<div class="courses-container">
+    <div class="header-section">
+        <h1>Available Courses</h1>
+        <p class="subtitle">Browse and explore our course offerings</p>
+    </div>
 
-        </li>
+    <div class="search-section">
+        <input type="text" id="courseSearch" placeholder="Search courses..." class="search-input">
+    </div>
+
+    <div class="courses-grid">
+        {% for course in courses %}
+        <a href="{{ url_for('course_detail', course_code=course['course_code']) }}" class="course-card">
+            <div class="course-code">{{ course['course_code'] }}</div>
+            <h3 class="course-title">{{ course['course_name'] }}</h3>
+            {% if course['department_id'] %}
+            <div class="course-dept">Department: {{ course['department_id'] }}</div>
+            {% endif %}
+            <div class="card-arrow">→</div>
+        </a>
         {% endfor %}
-    </ul>
+    </div>
+</div>
+
+<script>
+document.getElementById('courseSearch').addEventListener('keyup', function() {
+    const searchTerm = this.value.toLowerCase();
+    const courseCards = document.querySelectorAll('.course-card');
+    
+    courseCards.forEach(card => {
+        const title = card.querySelector('.course-title').textContent.toLowerCase();
+        const code = card.querySelector('.course-code').textContent.toLowerCase();
+        
+        if (title.includes(searchTerm) || code.includes(searchTerm)) {
+            card.style.display = '';
+        } else {
+            card.style.display = 'none';
+        }
+    });
+});
+</script>
+
+<style>
+    .courses-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+    
+    .header-section {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+    
+    .header-section h1 {
+        font-size: 36px;
+        color: #2c3e50;
+        margin-bottom: 10px;
+    }
+    
+    .subtitle {
+        font-size: 18px;
+        color: #7f8c8d;
+        margin-bottom: 30px;
+    }
+    
+    .search-section {
+        margin-bottom: 30px;
+        display: flex;
+        justify-content: center;
+    }
+    
+    .search-input {
+        width: 100%;
+        max-width: 600px;
+        padding: 12px 20px;
+        border-radius: 30px;
+        border: 1px solid #ddd;
+        font-size: 16px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        transition: all 0.3s ease;
+    }
+    
+    .search-input:focus {
+        outline: none;
+        box-shadow: 0 2px 15px rgba(52, 152, 219, 0.2);
+        border-color: #3498db;
+    }
+    
+    .courses-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 25px;
+    }
+    
+    .course-card {
+        background-color: white;
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+        transition: all 0.3s ease;
+        text-decoration: none;
+        color: inherit;
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+    }
+    
+    .course-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+    }
+    
+    .course-card:hover .card-arrow {
+        opacity: 1;
+        transform: translateX(0);
+    }
+    
+    .course-code {
+        display: inline-block;
+        background-color: #3498db;
+        color: white;
+        padding: 5px 10px;
+        border-radius: 5px;
+        font-size: 14px;
+        font-weight: bold;
+        margin-bottom: 12px;
+    }
+    
+    .course-title {
+        font-size: 20px;
+        margin-bottom: 15px;
+        color: #2c3e50;
+        flex-grow: 1;
+        line-height: 1.4;
+    }
+    
+    .course-dept {
+        font-size: 14px;
+        color: #7f8c8d;
+        margin-top: auto;
+    }
+    
+    .card-arrow {
+        position: absolute;
+        bottom: 20px;
+        right: 20px;
+        color: #3498db;
+        font-size: 24px;
+        opacity: 0;
+        transform: translateX(-10px);
+        transition: all 0.3s ease;
+    }
+
+    @media (max-width: 768px) {
+        .courses-grid {
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+        }
+    }
+    
+    @media (max-width: 480px) {
+        .courses-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
 {% endblock %}
