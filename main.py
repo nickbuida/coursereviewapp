@@ -101,17 +101,14 @@ def index():
 def courses():
     conn = get_db_connection()
 
-    # Fetch all courses with average difficulty rating
+    # Fetch all courses without avg_difficulty
     courses = conn.execute('''
         SELECT c.course_code, c.course_name, c.department_id, d.department_name, 
-               cp.professor_id, p.name as professor_name, 
-               AVG(r.difficulty_rating) as avg_difficulty
+               cp.professor_id, p.name as professor_name
         FROM courses c
         LEFT JOIN departments d ON c.department_id = d.department_id
         LEFT JOIN course_professors cp ON c.course_code = cp.course_code
         LEFT JOIN professors p ON cp.professor_id = p.professor_id
-        LEFT JOIN reviews r ON c.course_code = r.course_code
-        GROUP BY c.course_code, c.course_name, c.department_id, d.department_name, cp.professor_id, p.name
     ''').fetchall()
 
     # Fetch unique departments
