@@ -7,6 +7,7 @@ DROP TABLE IF EXISTS courses;
 DROP TABLE IF EXISTS students;
 DROP TABLE IF EXISTS departments;
 DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS posts;
 
 -- Table: users (moved up since students will reference it)
 CREATE TABLE users (
@@ -69,7 +70,6 @@ CREATE TABLE performance (
     course_code TEXT NOT NULL,
     score REAL,
     grade TEXT,
-    attendance REAL,
     FOREIGN KEY (student_id) REFERENCES students(student_id),
     FOREIGN KEY (course_code) REFERENCES courses(course_code)
 );
@@ -81,4 +81,12 @@ CREATE TABLE course_professors (
     PRIMARY KEY (course_code, professor_id),
     FOREIGN KEY (course_code) REFERENCES courses(course_code),
     FOREIGN KEY (professor_id) REFERENCES professors(professor_id)
+);
+
+-- Table: posts
+CREATE TABLE posts (
+    post_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title TEXT NOT NULL,
+    content TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
