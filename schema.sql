@@ -1,6 +1,4 @@
 -- Drop tables if they exist
-DROP TABLE IF EXISTS review_tags;
-DROP TABLE IF EXISTS tags;
 DROP TABLE IF EXISTS course_professors;
 DROP TABLE IF EXISTS professors;
 DROP TABLE IF EXISTS performance;
@@ -84,19 +82,4 @@ CREATE TABLE course_professors (
     PRIMARY KEY (course_code, professor_id),
     FOREIGN KEY (course_code) REFERENCES courses(course_code),
     FOREIGN KEY (professor_id) REFERENCES professors(professor_id)
-);
-
--- Table: tags
-CREATE TABLE tags (
-    tag_id INTEGER PRIMARY KEY AUTOINCREMENT,
-    tag_name TEXT UNIQUE
-);
-
--- Table: review_tags
-CREATE TABLE review_tags (
-    review_id INTEGER NOT NULL,
-    tag_id INTEGER NOT NULL,
-    PRIMARY KEY (review_id, tag_id),
-    FOREIGN KEY (review_id) REFERENCES reviews(review_id),
-    FOREIGN KEY (tag_id) REFERENCES tags(tag_id)
 );

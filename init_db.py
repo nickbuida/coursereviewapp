@@ -118,27 +118,6 @@ cur.execute("INSERT INTO reviews (student_id, professor_id, course_code, difficu
 cur.execute("INSERT INTO reviews (student_id, professor_id, course_code, difficulty_rating, professor_rating, comments, score) VALUES (3, 7, 'PSYCH101', 7.0, 9, 'Intro to Psychology is fascinating. Dr. Goodall is an excellent professor.', 85.0)")
 cur.execute("INSERT INTO reviews (student_id, professor_id, course_code, difficulty_rating, professor_rating, comments, score) VALUES (1, 6, 'BIO335', 8.0, 9, 'Genetics is a tough course but Dr. Darwin makes it interesting.', 90.0)")
 
-# Insert sample tags
-cur.execute("INSERT INTO tags (tag_name) VALUES ('Challenging')")
-cur.execute("INSERT INTO tags (tag_name) VALUES ('Recommended')")
-cur.execute("INSERT INTO tags (tag_name) VALUES ('Easy')")
-cur.execute("INSERT INTO tags (tag_name) VALUES ('Project-based')")
-cur.execute("INSERT INTO tags (tag_name) VALUES ('Lecture-heavy')")
-cur.execute("INSERT INTO tags (tag_name) VALUES ('Great Professor')")
-
-# Tag reviews
-cur.execute("INSERT INTO review_tags (review_id, tag_id) VALUES (1, 2)")  # Review 1 tagged as Recommended
-cur.execute("INSERT INTO review_tags (review_id, tag_id) VALUES (2, 1)")  # Review 2 tagged as Challenging
-cur.execute("INSERT INTO review_tags (review_id, tag_id) VALUES (3, 4)")  # Review 3 tagged as Project-based
-cur.execute("INSERT INTO review_tags (review_id, tag_id) VALUES (3, 6)")  # Review 3 tagged as Great Professor
-cur.execute("INSERT INTO review_tags (review_id, tag_id) VALUES (4, 2)")  # Review 4 tagged as Recommended
-cur.execute("INSERT INTO review_tags (review_id, tag_id) VALUES (4, 6)")  # Review 4 tagged as Great Professor
-cur.execute("INSERT INTO review_tags (review_id, tag_id) VALUES (5, 1)")  # Review 5 tagged as Challenging
-cur.execute("INSERT INTO review_tags (review_id, tag_id) VALUES (6, 3)")  # Review 6 tagged as Easy
-cur.execute("INSERT INTO review_tags (review_id, tag_id) VALUES (7, 4)")  # Demo user's review tagged as Project-based
-
-
-
 # Commit and close
 connection.commit()
 connection.close()
