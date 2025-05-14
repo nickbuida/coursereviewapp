@@ -22,7 +22,6 @@ CREATE TABLE students (
     student_id INTEGER PRIMARY KEY,
     user_id INTEGER,
     name TEXT NOT NULL,
-    academic_details TEXT,
     FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
 
