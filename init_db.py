@@ -137,9 +137,7 @@ cur.execute("INSERT INTO review_tags (review_id, tag_id) VALUES (5, 1)")  # Revi
 cur.execute("INSERT INTO review_tags (review_id, tag_id) VALUES (6, 3)")  # Review 6 tagged as Easy
 cur.execute("INSERT INTO review_tags (review_id, tag_id) VALUES (7, 4)")  # Demo user's review tagged as Project-based
 
-# Insert sample posts
-cur.execute("INSERT INTO posts (title, content) VALUES (?, ?)", ('First post', 'This is the content of the first post.'))
-cur.execute("INSERT INTO posts (title, content) VALUES (?, ?)", ('Second post', 'Here is the content of my second post.'))
+
 
 # Commit and close
 connection.commit()
