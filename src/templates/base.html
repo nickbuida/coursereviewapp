@@ -7,8 +7,88 @@
     <title>{% block title %}My Website{% endblock %}</title>
 </head>
 <body>
+    <nav class="navbar">
+        <div class="navbar-brand">
+            <a href="{{ url_for('index') }}">Course Review App</a>
+        </div>
+        
+        <div class="navbar-menu">
+            {% if 'user_id' in session %}
+            <div class="navbar-user">
+                <span>Hello, {{ session['username'] }}!</span>
+                <a href="{{ url_for('logout') }}" class="logout-btn">Logout</a>
+            </div>
+            {% else %}
+            <div class="navbar-auth">
+                <a href="{{ url_for('login') }}">Login</a>
+                <a href="{{ url_for('register') }}">Register</a>
+            </div>
+            {% endif %}
+        </div>
+    </nav>
+
     <div id="main">
         {% block content %}{% endblock %}
     </div>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #2c3e50;
+            padding: 15px 25px;
+            color: white;
+        }
+        
+        .navbar a {
+            color: white;
+            text-decoration: none;
+        }
+        
+        .navbar-brand a {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        
+        .navbar-menu {
+            display: flex;
+            align-items: center;
+        }
+        
+        .navbar-auth a, .logout-btn {
+            margin-left: 15px;
+            padding: 8px 12px;
+            border-radius: 4px;
+            transition: background-color 0.2s;
+        }
+        
+        .navbar-auth a:hover, .logout-btn:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .navbar-user {
+            display: flex;
+            align-items: center;
+        }
+        
+        .navbar-user span {
+            margin-right: 10px;
+        }
+        
+        #main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+    </style>
 </body>
 </html>

@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="professor-dashboard">
+    <div class="navigation">
+        <a href="javascript:history.back()" class="back-btn"><i class="back-arrow">←</i> Back</a>
+    </div>
+
+    <h1>{{ professor['name'] }}</h1>
+
+    <div class="ratings-summary">
+        <p><strong>Average Rating:</strong> {{ ratings['avg_rating'] or 'N/A' }}</p>
+        <p><strong>Median Rating:</strong> {{ ratings['median_rating'] or 'N/A' }}</p>
+    </div>
+
+    <div class="department-info">
+        <p><strong>Department:</strong> <a href="{{ url_for('department_detail', department_id=professor['department_id']) }}">{{ professor['department_name'] }}</a></p>
+    </div>
+
+    <div class="courses-list">
+        <h2>Courses Taught</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Course Code</th>
+                    <th>Course Name</th>
+                    <th>Average Rating</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for course in courses %}
+                <tr>
+                    <td><a href="{{ url_for('course_detail', course_code=course['course_code']) }}">{{ course['course_code'] }}</a></td>
+                    <td><a href="{{ url_for('course_detail', course_code=course['course_code']) }}">{{ course['course_name'] }}</a></td>
+                    <td>{{ course['avg_course_rating'] or 'N/A' }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<style>
+    .professor-dashboard {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .professor-dashboard h1 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .ratings-summary {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .department-info {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .courses-list table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .courses-list th, .courses-list td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+    }
+
+    .courses-list th {
+        background-color: #f4f4f4;
+    }
+
+    .navigation {
+        margin-bottom: 15px;
+    }
+
+    .back-btn {
+        display: inline-flex;
+        align-items: center;
+        color: #3498db;
+        text-decoration: none;
+        font-weight: 500;
+        padding: 8px 12px;
+        border-radius: 4px;
+        transition: all 0.2s ease;
+    }
+
+    .back-btn:hover {
+        background-color: rgba(52, 152, 219, 0.1);
+    }
+
+    .back-arrow {
+        margin-right: 6px;
+        font-size: 18px;
+    }
+</style>
+{% endblock %}

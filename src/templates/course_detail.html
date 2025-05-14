@@ -9,27 +9,39 @@
     <h1>{{ course['course_name'] }}</h1>
     <div class="course-meta">
         <span class="course-code">{{ course['course_code'] }}</span>
-        <span class="department">{{ department_name }}</span>
+        <span class="department">Department: <a href="{{ url_for('department_detail', department_id=course['department_id']) }}" class="department-link">{{ department_name }}</a></span>
     </div>
+</div>
+
+<div class="course-averages">
+    <p><strong>Average Difficulty:</strong> {{ averages['avg_difficulty']|default('N/A') }}</p>
+    <p><strong>Average Rating:</strong> {{ averages['avg_rating']|default('N/A') }}</p>
+    <p><strong>Average Grade:</strong> {% if averages['avg_grade'] is not none %}{% if averages['avg_grade'] >= 90 %}A{% elif averages['avg_grade'] >= 80 %}B{% elif averages['avg_grade'] >= 70 %}C{% elif averages['avg_grade'] >= 60 %}D{% else %}F{% endif %}{% else %}N/A{% endif %}</p>
 </div>
 
 <div class="course-details">
-    <div class="course-info">
-        <p><strong>Department ID:</strong> {{ course['department_id'] }}</p>
-        {% if course['credit_hours'] %}<p><strong>Credit Hours:</strong> {{ course['credit_hours'] }}</p>{% endif %}
-        {% if course['description'] %}<p class="description">{{ course['description'] }}</p>{% endif %}
-    </div>
-</div>
-
-<div class="reviews-section">
-    <h2>Reviews <a href="/course/{{course['course_code']}}/add_review" class="add-review-btn">Add Review</a></h2>
+    
+    <h2>Reviews <a href="{{ url_for('add_review', course_code=course['course_code']) }}" class="add-review-btn">Add Review</a></h2>
     
     {% if reviews %}
     <div class="reviews-list">
         {% for review in reviews %}
-        <div class="review-card">
+        <div class="review-card {% if review['is_own_review'] %}own-review{% endif %}">
+            {% if review['is_own_review'] %}
+            <div class="review-header">
+                <div class="own-review-badge">Your Review</div>
+                <div class="review-actions">
+                    <a href="{{ url_for('edit_review', review_id=review['review_id']) }}" class="edit-btn">Edit</a>
+                    <a href="{{ url_for('delete_review', review_id=review['review_id']) }}" class="delete-btn" onclick="return confirm('Are you sure you want to delete this review?');">Delete</a>
+                </div>
+            </div>
+            {% endif %}
+            
             <div class="review-meta">
-                <span class="professor-name">Professor: {{ review['professor_name'] or 'Unknown' }}</span>
+                <span class="professor-name">Professor: <a href="{{ url_for('professor_detail', professor_id=review['professor_id']) }}">{{ review['professor_name'] or 'Unknown' }}</a></span>
+                {% if not review['is_own_review'] %}
+                <span class="student-name">By: {{ review['student_name'] }}</span>
+                {% endif %}
             </div>
             <div class="review-ratings">
                 <div class="rating"><span>Difficulty:</span> 
@@ -47,6 +59,8 @@
             </div>
             <div class="review-comments">
                 <p>{{ review['comments'] }}</p>
+                <p><strong>Grade:</strong> {% if review['score'] is not none %}{% if review['score'] >= 90 %}A{% elif review['score'] >= 80 %}B{% elif review['score'] >= 70 %}C{% elif review['score'] >= 60 %}D{% else %}F{% endif %}{% else %}N/A{% endif %}</p>
+                <p><strong>Course Rating:</strong> {% if review['course_rating'] is not none %}{{ review['course_rating'] }}/5{% else %}N/A{% endif %}</p>
             </div>
         </div>
         {% endfor %}
@@ -108,6 +122,21 @@
         margin-right: 10px;
     }
     
+    /* Course averages */
+    .course-averages {
+        margin-top: 15px;
+        padding: 15px;
+        background-color: #f9f9f9;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .course-averages p {
+        margin: 5px 0;
+        font-size: 16px;
+        color: #2c3e50;
+    }
+    
     /* Course details */
     .course-details {
         background-color: white;
@@ -165,6 +194,74 @@
         border-radius: 8px;
         padding: 15px;
         box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        position: relative;
+    }
+    
+    /* Style for user's own reviews */
+    .review-card.own-review {
+        background-color: #f0f8ff;
+        border-left: 4px solid #3498db;
+    }
+    
+    /* Review header with badge and edit button */
+    .review-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+    }
+    
+    .own-review-badge {
+        background-color: #3498db;
+        color: white;
+        font-size: 12px;
+        padding: 3px 8px;
+        border-radius: 10px;
+    }
+    
+    .review-actions {
+        display: flex;
+        gap: 8px;  /* Space between buttons */
+    }
+    
+    .edit-btn {
+        background-color: #f39c12;
+        color: white;
+        padding: 4px 10px;
+        border-radius: 4px;
+        font-size: 12px;
+        text-decoration: none;
+        transition: background-color 0.3s;
+    }
+    
+    .edit-btn:hover {
+        background-color: #e67e22;
+    }
+    
+    .delete-btn {
+        background-color: #e74c3c;
+        color: white;
+        padding: 4px 10px;
+        border-radius: 4px;
+        font-size: 12px;
+        text-decoration: none;
+        transition: background-color 0.3s;
+    }
+    
+    .delete-btn:hover {
+        background-color: #c0392b;
+    }
+    
+    .review-meta {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 15px;
+        flex-wrap: wrap;
+    }
+    
+    .student-name {
+        font-size: 14px;
+        color: #7f8c8d;
     }
     
     .review-ratings {
@@ -199,6 +296,15 @@
         background-color: #f8f9fa;
         border-radius: 8px;
         color: #6c757d;
+    }
+
+    .department-link {
+        color: white;
+        text-decoration: none;
+    }
+
+    .department-link:hover {
+        text-decoration: underline;
     }
 </style>
 {% endblock %}

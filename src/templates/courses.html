@@ -12,9 +12,39 @@
         <input type="text" id="courseSearch" placeholder="Search courses..." class="search-input">
     </div>
 
+    <div class="filter-section">
+        <select id="departmentFilter" class="filter-dropdown">
+            <option value="">All Departments</option>
+            {% for department in departments %}
+            <option value="{{ department['department_id'] }}">{{ department['department_name'] }}</option>
+            {% endfor %}
+        </select>
+
+        <select id="professorFilter" class="filter-dropdown">
+            <option value="">All Professors</option>
+            {% for professor in professors %}
+            <option value="{{ professor['professor_id'] }}">{{ professor['name'] }}</option>
+            {% endfor %}
+        </select>
+
+        <select id="difficultyFilter" class="filter-dropdown">
+            <option value="">All Difficulty Levels</option>
+            <option value="1">1 - Very Easy</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5 - Moderate</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10 - Very Hard</option>
+        </select>
+    </div>
+
     <div class="courses-grid">
         {% for course in courses %}
-        <a href="{{ url_for('course_detail', course_code=course['course_code']) }}" class="course-card">
+        <a href="{{ url_for('course_detail', course_code=course['course_code']) }}" class="course-card" data-professor-id="{{ course['professor_id'] }}" data-avg-difficulty="{{ course['avg_difficulty'] }}">
             <div class="course-code">{{ course['course_code'] }}</div>
             <h3 class="course-title">{{ course['course_name'] }}</h3>
             {% if course['department_id'] %}
@@ -27,21 +57,42 @@
 </div>
 
 <script>
-document.getElementById('courseSearch').addEventListener('keyup', function() {
-    const searchTerm = this.value.toLowerCase();
-    const courseCards = document.querySelectorAll('.course-card');
-    
+const departmentFilter = document.getElementById('departmentFilter');
+const professorFilter = document.getElementById('professorFilter');
+const difficultyFilter = document.getElementById('difficultyFilter');
+const courseCards = document.querySelectorAll('.course-card');
+
+departmentFilter.addEventListener('change', filterCourses);
+professorFilter.addEventListener('change', filterCourses);
+difficultyFilter.addEventListener('change', filterCourses);
+
+document.getElementById('courseSearch').addEventListener('keyup', filterCourses);
+
+function filterCourses() {
+    const searchTerm = document.getElementById('courseSearch').value.toLowerCase();
+    const selectedDepartment = departmentFilter.value;
+    const selectedProfessor = professorFilter.value;
+    const selectedDifficulty = difficultyFilter.value;
+
     courseCards.forEach(card => {
         const title = card.querySelector('.course-title').textContent.toLowerCase();
         const code = card.querySelector('.course-code').textContent.toLowerCase();
-        
-        if (title.includes(searchTerm) || code.includes(searchTerm)) {
+        const department = card.querySelector('.course-dept')?.textContent.toLowerCase() || '';
+        const professor = card.dataset.professorId || '';
+        const difficulty = parseFloat(card.dataset.avgDifficulty);
+
+        const matchesSearch = title.includes(searchTerm) || code.includes(searchTerm);
+        const matchesDepartment = !selectedDepartment || department.includes(selectedDepartment);
+        const matchesProfessor = !selectedProfessor || professor === selectedProfessor;
+        const matchesDifficulty = !selectedDifficulty || (difficulty && Math.round(difficulty) == selectedDifficulty);
+
+        if (matchesSearch && matchesDepartment && matchesProfessor && matchesDifficulty) {
             card.style.display = '';
         } else {
             card.style.display = 'none';
         }
     });
-});
+}
 </script>
 
 <style>
@@ -91,10 +142,25 @@ document.getElementById('courseSearch').addEventListener('keyup', function() {
         border-color: #3498db;
     }
     
+    .filter-section {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        margin-bottom: 20px;
+    }
+
+    .filter-dropdown {
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-size: 16px;
+    }
+    
     .courses-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-        gap: 25px;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Adjusted min width for better spacing */
+        gap: 20px; /* Reduced gap to balance spacing */
+        padding: 20px; /* Added padding around the grid */
     }
     
     .course-card {

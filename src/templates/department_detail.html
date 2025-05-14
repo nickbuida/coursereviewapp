@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="department-dashboard">
+    <h1>{{ department['department_name'] }}</h1>
+
+    <div class="professors-list">
+        <h2>Professors</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Professor Name</th>
+                    <th>Average Rating</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for professor in professors %}
+                <tr>
+                    <td><a href="{{ url_for('professor_detail', professor_id=professor['professor_id']) }}">{{ professor['name'] }}</a></td>
+                    <td>{{ professor['avg_rating'] or 'N/A' }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="courses-list">
+        <h2>Courses Taught</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Course Code</th>
+                    <th>Course Name</th>
+                    <th>Professor</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for course in courses %}
+                <tr>
+                    <td><a href="{{ url_for('course_detail', course_code=course['course_code']) }}">{{ course['course_code'] }}</a></td>
+                    <td><a href="{{ url_for('course_detail', course_code=course['course_code']) }}">{{ course['course_name'] }}</a></td>
+                    <td><a href="{{ url_for('professor_detail', professor_id=course['professor_id']) }}">{{ course['professor_name'] }}</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<style>
+    .department-dashboard {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .department-dashboard h1 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .professors-list, .courses-list {
+        margin-bottom: 30px;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th, td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+    }
+
+    th {
+        background-color: #f4f4f4;
+    }
+</style>
+{% endblock %}
